@@ -7,13 +7,11 @@ package frc.robot.commands;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
 public final class Autos {
   /** Example static factory for an autonomous command. */
   public static Command runShooter(ShooterSubsystem subsystem) {
-    ParallelRaceGroup shooterCommandWithTimeout = new ShooterCommand(subsystem, 20).withTimeout(5);
-    return Commands.sequence(shooterCommandWithTimeout, Commands.waitSeconds(5), shooterCommandWithTimeout);
+    return Commands.sequence(new ShooterCommand(subsystem, 20).withTimeout(5), Commands.waitSeconds(5), new ShooterCommand(subsystem, 20).withTimeout(5));
   }
 
   private Autos() {
