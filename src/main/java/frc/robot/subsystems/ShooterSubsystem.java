@@ -1,46 +1,36 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
-import com.ctre.phoenix6.hardware.TalonFX;
+import org.littletonrobotics.junction.Logger;
 
 // import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
   
-    private TalonFX shootermotor1; 
-    // private PIDController pidController_;
+    // private TalonFX shootermotor1; 
+    private final ShooterSubsystemIO io; 
+    private final ShooterSubsystemIOInputsAutoLogged inputs = new ShooterSubsystemIOInputsAutoLogged();
 
-  public ShooterSubsystem() {
-    shootermotor1 = new TalonFX(0);
-    // pidController_ = new PIDController(0,0,0,0);
-    // in init function, set slot 0 gains
-    var slot0Configs = new Slot0Configs();
-    slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
-    slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-    slot0Configs.kP = 0.11; // An error of 1 rps results in 0.11 V output
-    slot0Configs.kI = 0; // no output for integrated error
-    slot0Configs.kD = 0; // no output for error derivative
-
-    shootermotor1.getConfigurator().apply(slot0Configs);
+ /** Creates a new Shooter. */
+    public ShooterSubsystem(ShooterSubsystemIO io) {
+      this.io = io;
   }
-  // // setting PID values 
-  // public void setPID(double kp, double ki, double kd) {
-  //   pidController_.setPID(kp, ki, kd);
-  // }
 
   // start shooter and set to certain rps 
-  public void startShooter(double rps){
-    shootermotor1.setControl(new VelocityVoltage(rps)) ;
+  public void startShooter(double rps) {
+     io.startShooter(rps); 
   }
 
 // stop shooter by setting voltage out to 0
-  public void stopShooter(){
-    shootermotor1.setControl(new VoltageOut(0.0)) ;
+   public void stopShooter() {
+      io.stopShooter() ;
   }
   
+  @Override
+  public void periodic() {
+      io.updateInputs(inputs);
+      Logger.processInputs("ShooterSubsystem", inputs);
+}
 }
 
