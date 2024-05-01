@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ShooterSubsystemIO {
+   
     @AutoLog
     public static class ShooterSubsystemIOInputs {
        
@@ -16,10 +17,11 @@ public interface ShooterSubsystemIO {
     }
     // updating all of the inputs
     public default void updateInputs(ShooterSubsystemIOInputs inputs) {}
-
-    // setting shooter voltage
-    public default void setVoltage(double volts) {}
   
-    // setting shooter velocity
-    public default void setVelocity(double rps) {}
+    // starting shooter
+    public default void startShooter(double rps) {}
+
+    // stopping shooter (by setting voltage to 0)
+    public default void stopShooter() {}
+
   }
